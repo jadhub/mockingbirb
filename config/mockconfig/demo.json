@@ -1,0 +1,40 @@
+[
+  {
+    "route": "/helloworld/{key}",
+    "methods": ["get"],
+    "responses": [
+      {
+        "uri": "/helloworld/foo",
+        "method": "get",
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "message": "Welcome to Mockify!"
+        }
+      },
+      {
+        "uri": "/helloworld/bar",
+        "method": "get",
+        "statusCode": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "foo": {
+            "key1": 1,
+            "key2": true,
+            "key3": [
+              {
+                "foo": "foo",
+                "bar": true,
+                "baz": [1, 2, "3"]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+]

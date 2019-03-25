@@ -1,0 +1,16 @@
+.DS_Store
+.cache
+.idea
+.vscode
+.gradle
+.temp
+debug
+debug.test
+dist
+debug
+debug.test
+coverage
+junit.xml
+/vendor
+/integration-test/shared
+context_local.yml
