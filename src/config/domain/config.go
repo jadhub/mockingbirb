@@ -10,14 +10,12 @@ type (
 	}
 
 	Response struct {
-		URI        string      `json:"uri"`
-		Method     string      `json:"method"`
-		StatusCode int         `json:"statusCode"`
-		Headers    Headers     `json:"headers"`
-		Body       interface{} `json:"body,omitempty"`
+		URI        string            `json:"uri"`
+		Method     string            `json:"method"`
+		StatusCode int               `json:"statusCode"`
+		Headers    map[string]string `json:"headers"`
+		Body       interface{}       `json:"body,omitempty"`
 	}
 
-	Headers struct {
-		ContentType string `json:"Content-Type"`
-	}
+	Headers map[string]string
 )
