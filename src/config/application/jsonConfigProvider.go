@@ -14,7 +14,7 @@ type (
 )
 
 const (
-	CONFIGDIR = "config/mockconfig"
+	CONFIGDIR = "config/json_config"
 )
 
 func (p *JsonConfigProvider) GetConfigTree() domain.ConfigTree {
