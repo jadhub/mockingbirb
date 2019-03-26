@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"bytes"
 	"context"
 	"net/http"
 	"strings"
@@ -60,15 +61,28 @@ func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.R
 	c.responder.Data(responseConfig.Body)
 
 	responseHeader := http.Header{}
+
 	for key, value := range responseConfig.Headers {
 		responseHeader[key] = make([]string, 1)
 		responseHeader[key] = append(responseHeader[key], value)
 	}
 
-	response := c.responder.Data(responseConfig.Body).Status(uint(responseConfig.StatusCode))
-	response.Header = responseHeader
+	responseBody := ""
+	val, ok := responseConfig.Body.(string)
+	if !ok {
+		response := c.responder.Data(responseConfig.Body).Status(uint(responseConfig.StatusCode))
+		response.Header = responseHeader
 
-	return response
+		return response
+	}
+
+	responseBody = val
+
+	return &web.Response{
+		Status: uint(responseConfig.StatusCode),
+		Header: responseHeader,
+		Body:   bytes.NewBufferString(responseBody),
+	}
 }
 
 func (c *MockController) getResponseConfig(tree configDomain.ConfigTree, requestUrlPath string, requestMethod string) *configDomain.Response {
