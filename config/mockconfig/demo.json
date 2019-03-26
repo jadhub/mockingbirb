@@ -4,18 +4,18 @@
     "methods": ["get"],
     "responses": [
       {
-        "uri": "/helloworld/foo",
+        "uri": "/greet/me",
         "method": "get",
         "statusCode": 200,
         "headers": {
           "Content-Type": "application/json"
         },
         "body": {
-          "message": "Welcome to Mockify!"
+          "message": "Mockingbirb says hi!"
         }
       },
       {
-        "uri": "/helloworld/bar",
+        "uri": "/test/bar",
         "method": "get",
         "statusCode": 200,
         "headers": {
