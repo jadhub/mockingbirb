@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"go.aoe.com/mockingbirb/src/config/domain"
 )
@@ -39,6 +40,11 @@ func (p *JsonConfigProvider) loadConfig(path string) domain.ConfigTree {
 		fileInfo, err := os.Stat(file)
 		if err != nil {
 			panic(err)
+		}
+
+		// skip non-json files here
+		if !strings.HasSuffix(fileInfo.Name(), ".json") {
+			continue
 		}
 
 		switch mode := fileInfo.Mode(); {
