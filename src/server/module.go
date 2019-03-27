@@ -53,10 +53,10 @@ func (r *routes) Inject(
 func (r *routes) registerMockRoutes(registry *web.RouterRegistry) {
 	for _, config := range r.configProvider.GetConfigTree() {
 		for _, response := range config.Responses {
-			key := strings.Replace(response.URI, "/", ".", -1)
+			key := strings.Replace(response.MatcherConfig.URI, "/", ".", -1)
 
 			registry.HandleAny(key, r.mockController.MockAction)
-			registry.Route(response.URI, key)
+			registry.Route(response.MatcherConfig.URI, key)
 		}
 	}
 }

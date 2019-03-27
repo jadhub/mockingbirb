@@ -3,6 +3,7 @@ package controller
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -53,24 +54,21 @@ func (c *MockController) GetConfigAction(ctx context.Context, req *web.Request) 
 func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.Result {
 	configTree := c.configProvider.GetConfigTree()
 
-	requestUrlPath := req.Request().URL.Path
-	requestMethod := req.Request().Method
+	responseConfig := c.getResponseConfig(configTree, req)
 
-	responseConfig := c.getResponseConfig(configTree, requestUrlPath, requestMethod)
-
-	c.responder.Data(responseConfig.Body)
+	c.responder.Data(responseConfig.ResponseConfig.Body)
 
 	responseHeader := http.Header{}
 
-	for key, value := range responseConfig.Headers {
+	for key, value := range responseConfig.ResponseConfig.Headers {
 		responseHeader[key] = make([]string, 1)
 		responseHeader[key] = append(responseHeader[key], value)
 	}
 
 	responseBody := ""
-	val, ok := responseConfig.Body.(string)
+	val, ok := responseConfig.ResponseConfig.Body.(string)
 	if !ok {
-		response := c.responder.Data(responseConfig.Body).Status(uint(responseConfig.StatusCode))
+		response := c.responder.Data(responseConfig.ResponseConfig.Body).Status(uint(responseConfig.ResponseConfig.StatusCode))
 		response.Header = responseHeader
 
 		return response
@@ -79,20 +77,104 @@ func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.R
 	responseBody = val
 
 	return &web.Response{
-		Status: uint(responseConfig.StatusCode),
+		Status: uint(responseConfig.ResponseConfig.StatusCode),
 		Header: responseHeader,
 		Body:   bytes.NewBufferString(responseBody),
 	}
 }
 
-func (c *MockController) getResponseConfig(tree configDomain.ConfigTree, requestUrlPath string, requestMethod string) *configDomain.Response {
+func (c *MockController) getResponseConfig(tree configDomain.ConfigTree, req *web.Request) *configDomain.Response {
+	// Request Data
+	requestURI := req.Request().URL.Path
+	requestMethod := req.Request().Method
+	requestGetParams := req.QueryAll()
+	requestPostParams, err := req.FormAll()
+	if err != nil {
+		requestPostParams = nil
+	}
+
 	for _, config := range tree {
 		for _, response := range config.Responses {
-			if response.URI == requestUrlPath && strings.ToLower(response.Method) == strings.ToLower(requestMethod) {
+			// matcher Data
+			matcherURI := response.MatcherConfig.URI
+			matcherMethod := response.MatcherConfig.Method
+			matcherGetParams := response.MatcherConfig.Params.GET
+			matcherPostParams := response.MatcherConfig.Params.POST
+
+			// check if URI and Http method match
+			if matcherURI == requestURI && strings.ToLower(matcherMethod) == strings.ToLower(requestMethod) {
+				// check if matcherGetParams are set
+				fmt.Printf("%d", len(requestGetParams))
+				if len(matcherGetParams) > 0 {
+					getValidation := true
+
+					for key, value := range matcherGetParams {
+						// check if matcherGetParams don't match request
+						if requestGetParams.Get(key) != value {
+							getValidation = false
+						}
+					}
+
+					if getValidation == true {
+						return &response
+					} else {
+						return c.ParamMismatchResponse()
+					}
+				}
+
+				// check if matcherPostParams are set
+				if len(matcherPostParams) > 0 {
+					postValidation := false
+
+					for key, matcherValue := range matcherPostParams {
+						// Check if matcherGetParams don't match request
+						for _, paramValue := range requestPostParams[key] {
+							if paramValue == matcherValue {
+								postValidation = true
+							}
+						}
+					}
+
+					if postValidation == true {
+						return &response
+					} else {
+						return c.ParamMismatchResponse()
+					}
+				}
+
+				// matcherGetParams and matcherPostParams are optional, if URI and http method match, return response
 				return &response
 			}
 		}
 	}
 
-	return nil
+	return c.NoConfigFoundResponse()
+}
+
+func (c *MockController) ParamMismatchResponse() *configDomain.Response {
+	return &configDomain.Response{
+		ResponseConfig: struct {
+			StatusCode int               `json:"statusCode"`
+			Headers    map[string]string `json:"headers"`
+			Body       interface{}       `json:"body,omitempty"`
+		}{
+			StatusCode: 412,
+			Headers:    nil,
+			Body:       "Mockingbirb config param mismatch",
+		},
+	}
+}
+
+func (c *MockController) NoConfigFoundResponse() *configDomain.Response {
+	return &configDomain.Response{
+		ResponseConfig: struct {
+			StatusCode int               `json:"statusCode"`
+			Headers    map[string]string `json:"headers"`
+			Body       interface{}       `json:"body,omitempty"`
+		}{
+			StatusCode: 404,
+			Headers:    nil,
+			Body:       "Mockingbirb config not found for this request",
+		},
+	}
 }

@@ -1,47 +1,91 @@
 [
   {
-    "route": "/helloworld/{key}",
-    "methods": ["get"],
     "responses": [
       {
-        "uri": "/greet/me",
-        "method": "get",
-        "statusCode": 200,
-        "headers": {
-          "Content-Type": "application/json"
+        "matcherconfig": {
+          "uri": "/greet/me",
+          "method": "get"
         },
-        "body": {
-          "message": "Mockingbirb says hi"
+        "responseconfig": {
+          "statusCode": 200,
+          "headers": {
+            "Content-Type": "text/plain; charset=utf-8"
+          },
+          "body": {
+            "message": "Mockingbirb says hi!"
+          }
         }
       },
       {
-        "uri": "/test/json",
-        "method": "get",
-        "statusCode": 200,
-        "headers": {
-          "Content-Type": "application/json"
+        "matcherconfig": {
+          "uri": "/get/json",
+          "method": "get"
         },
-        "body": {
-          "foo": {
-            "key1": 1,
-            "key2": true,
-            "key3": [
-              {
-                "foo": "foo",
-                "bar": true,
-                "baz": [1, 2, "3"]
-              }
-            ]
+        "responseconfig": {
+          "statusCode": 200,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "foo": {
+              "key1": 1,
+              "key2": true,
+              "key3": [
+                {
+                  "foo": "foo",
+                  "bar": true,
+                  "baz": [1, 2, "3"]
+                }
+              ]
+            }
           }
         }
       },{
-        "uri": "/test/xml",
-        "method": "get",
-        "statusCode": 200,
-        "headers": {
-          "Content-Type": "application/xml; charset=utf-8"
+        "matcherconfig": {
+          "uri": "/get/xml",
+          "method": "get"
         },
-        "body": "<test><default><a>1</a><b>1</b></default></test>"
+        "responseconfig": {
+          "statusCode": 200,
+          "headers": {
+            "Content-Type": "application/xml; charset=utf-8"
+          },
+          "body": "<test><default><a>1</a><b>1</b></default></test>"
+        }
+      },{
+        "matcherconfig": {
+          "uri": "/get/specific_get_param",
+          "method": "get",
+          "params": {
+            "GET": {
+              "test123": "123"
+            }
+          }
+        },
+        "responseconfig": {
+          "statusCode": 200,
+          "headers": {
+            "Content-Type": "text/plain; charset=utf-8"
+          },
+          "body": "successful"
+        }
+      },{
+        "matcherconfig": {
+          "uri": "/post/specific_post_param",
+          "method": "post",
+          "params": {
+            "POST": {
+              "test123": "123"
+            }
+          }
+        },
+        "responseconfig": {
+          "statusCode": 200,
+          "headers": {
+            "Content-Type": "text/plain; charset=utf-8"
+          },
+          "body": "successful"
+        }
       }
     ]
   }
