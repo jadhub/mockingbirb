@@ -16,10 +16,9 @@ import (
 type (
 	// MockController ...
 	MockController struct {
-		logger         flamingo.Logger
-		responder      *web.Responder
-		configProvider configDomain.ConfigProvider
-		mockConfig     string
+		Logger         flamingo.Logger
+		Responder      *web.Responder
+		ConfigProvider configDomain.ConfigProvider
 	}
 	// MockResult ...
 	MockResult struct {
@@ -31,32 +30,28 @@ func (c *MockController) Inject(
 	responder *web.Responder,
 	logger flamingo.Logger,
 	configProvider configDomain.ConfigProvider,
-	config *struct {
-		MockConfig string `inject:"config:mockconfig"`
-	},
 ) {
-	c.logger = logger
-	c.responder = responder
-	c.configProvider = configProvider
-	c.mockConfig = config.MockConfig
+	c.Logger = logger
+	c.Responder = responder
+	c.ConfigProvider = configProvider
 }
 
 func (c *MockController) GetConfigAction(ctx context.Context, req *web.Request) web.Result {
-	configTree := c.configProvider.GetConfigTree()
+	configTree := c.ConfigProvider.GetConfigTree()
 
 	res := MockResult{
 		Config: configTree,
 	}
 
-	return c.responder.Data(res).Status(http.StatusOK)
+	return c.Responder.Data(res).Status(http.StatusOK)
 }
 
 func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.Result {
-	configTree := c.configProvider.GetConfigTree()
+	configTree := c.ConfigProvider.GetConfigTree()
 
 	responseConfig := c.getResponseConfig(configTree, req)
 
-	c.responder.Data(responseConfig.ResponseConfig.Body)
+	c.Responder.Data(responseConfig.ResponseConfig.Body)
 
 	responseHeader := http.Header{}
 
@@ -68,7 +63,7 @@ func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.R
 	responseBody := ""
 	val, ok := responseConfig.ResponseConfig.Body.(string)
 	if !ok {
-		response := c.responder.Data(responseConfig.ResponseConfig.Body).Status(uint(responseConfig.ResponseConfig.StatusCode))
+		response := c.Responder.Data(responseConfig.ResponseConfig.Body).Status(uint(responseConfig.ResponseConfig.StatusCode))
 		response.Header = responseHeader
 
 		return response
@@ -159,8 +154,10 @@ func (c *MockController) ParamMismatchResponse() *configDomain.Response {
 			Body       interface{}       `json:"body,omitempty"`
 		}{
 			StatusCode: 404,
-			Headers:    nil,
-			Body:       "Mockingbirb config found, but param mismatch",
+			Headers: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
+			Body: "Mockingbirb config found, but param mismatch",
 		},
 	}
 }
@@ -173,8 +170,10 @@ func (c *MockController) NoConfigFoundResponse() *configDomain.Response {
 			Body       interface{}       `json:"body,omitempty"`
 		}{
 			StatusCode: 404,
-			Headers:    nil,
-			Body:       "Mockingbirb config not found for this request",
+			Headers: map[string]string{
+				"Content-Type": "text/plain; charset=utf-8",
+			},
+			Body: "Mockingbirb config not found for this request",
 		},
 	}
 }

@@ -19,10 +19,10 @@ const (
 )
 
 func (p *JsonConfigProvider) GetConfigTree() domain.ConfigTree {
-	return p.loadConfig(CONFIGDIR)
+	return p.LoadConfig(CONFIGDIR)
 }
 
-func (p *JsonConfigProvider) loadConfig(path string) domain.ConfigTree {
+func (p *JsonConfigProvider) LoadConfig(path string) domain.ConfigTree {
 	var files []string
 
 	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
