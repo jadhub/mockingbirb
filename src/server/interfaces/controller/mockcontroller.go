@@ -158,9 +158,9 @@ func (c *MockController) ParamMismatchResponse() *configDomain.Response {
 			Headers    map[string]string `json:"headers"`
 			Body       interface{}       `json:"body,omitempty"`
 		}{
-			StatusCode: 412,
+			StatusCode: 404,
 			Headers:    nil,
-			Body:       "Mockingbirb config param mismatch",
+			Body:       "Mockingbirb config found, but param mismatch",
 		},
 	}
 }
