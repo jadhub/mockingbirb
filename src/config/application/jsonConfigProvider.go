@@ -3,6 +3,7 @@ package application
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,18 +12,28 @@ import (
 )
 
 type (
-	JsonConfigProvider struct{}
+	JsonConfigProvider struct {
+		cfg domain.ConfigTree
+	}
 )
 
 const (
 	CONFIGDIR = "config/json_config"
 )
 
+func NewJsonConfigProvider() *JsonConfigProvider {
+	p := new(JsonConfigProvider)
+	p.cfg = p.LoadConfig(CONFIGDIR)
+	return p
+}
+
 func (p *JsonConfigProvider) GetConfigTree() domain.ConfigTree {
-	return p.LoadConfig(CONFIGDIR)
+	return p.cfg
 }
 
 func (p *JsonConfigProvider) LoadConfig(path string) domain.ConfigTree {
+	log.Print("loading config")
+
 	var files []string
 
 	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
