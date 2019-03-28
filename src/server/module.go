@@ -10,7 +10,7 @@ import (
 )
 
 type (
-	// Module ...
+	// Module with routerRegistry
 	Module struct {
 		routerRegistry *web.RouterRegistry
 	}
@@ -33,7 +33,7 @@ type routes struct {
 	configProvider configDomain.ConfigProvider
 }
 
-// Routes for cart api
+// Routes for mockingbirb api
 func (r *routes) Routes(registry *web.RouterRegistry) {
 	registry.HandleGet("mockingbirb.api.getConfig", r.mockController.GetConfigAction)
 	registry.Route("/api/getConfig", "mockingbirb.api.getConfig")

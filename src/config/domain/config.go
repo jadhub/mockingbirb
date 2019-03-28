@@ -1,25 +1,28 @@
 package domain
 
 type (
+	// ConfigTree encapsulates MockConfigs
 	ConfigTree []*MockConfig
 
+	// MockConfig holds a list of Responses
 	MockConfig struct {
-		Responses []Response `json:"responses"`
+		Responses []Response
 	}
 
+	// Response structures the MatcherConfig and ResponseConfig for a single request and response
 	Response struct {
 		MatcherConfig struct {
-			URI    string `json:"uri"`
-			Method string `json:"method"`
+			URI    string
+			Method string
 			Params struct {
-				GET  map[string]string `json:"GET,omitempty"`
-				POST map[string]string `json:"POST,omitempty"`
-			} `json:"params,omitempty"`
-		} `json:"matcherconfig"`
+				GET  map[string]string
+				POST map[string]string
+			}
+		}
 		ResponseConfig struct {
-			StatusCode int               `json:"statusCode"`
-			Headers    map[string]string `json:"headers"`
-			Body       interface{}       `json:"body,omitempty"`
-		} `json:"responseconfig"`
+			StatusCode int
+			Headers    map[string]string
+			Body       interface{}
+		}
 	}
 )

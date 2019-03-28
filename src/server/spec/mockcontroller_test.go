@@ -12,14 +12,14 @@ import (
 
 	"flamingo.me/flamingo/v3/framework/flamingo"
 	"flamingo.me/flamingo/v3/framework/web"
-	configApplication "go.aoe.com/mockingbirb/src/config/application"
 	configDomain "go.aoe.com/mockingbirb/src/config/domain"
+	configInfrastructure "go.aoe.com/mockingbirb/src/config/infrastructure"
 	"go.aoe.com/mockingbirb/src/server/interfaces/controller"
 )
 
 type (
 	DemoConfigProvider struct {
-		JsonConfigProvider configApplication.JsonConfigProvider
+		JSONConfigProvider configInfrastructure.JSONConfigProvider
 	}
 
 	testRequestInfo struct {
@@ -30,6 +30,7 @@ type (
 	}
 )
 
+// GetConfigTree for the DemoConfigProvider
 func (p *DemoConfigProvider) GetConfigTree() configDomain.ConfigTree {
 	dir, err := os.Getwd()
 
@@ -41,12 +42,14 @@ func (p *DemoConfigProvider) GetConfigTree() configDomain.ConfigTree {
 	return p.LoadConfig(dir + "/test_json_config/config.json")
 }
 
+// LoadConfig for the DemoConfigProvider
 func (p *DemoConfigProvider) LoadConfig(path string) configDomain.ConfigTree {
-	configTree := p.JsonConfigProvider.LoadConfig(path)
+	configTree := p.JSONConfigProvider.LoadConfig(path)
 
 	return configTree
 }
 
+// TestMockController_MockAction tests routes from the test_json_config/config.json file
 func TestMockController_MockAction(t *testing.T) {
 	type fields struct {
 		logger         flamingo.Logger

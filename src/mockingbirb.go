@@ -12,7 +12,7 @@ type MOCKINGBIRB struct {
 	Injector       *dingo.Injector     `inject:""`
 }
 
-// Configure ...
+// Configure mockingbirb application
 func (mockingbirb *MOCKINGBIRB) Configure(injector *dingo.Injector) {
 	injector.Bind((*cache.Backend)(nil)).ToInstance(cache.NewInMemoryCache())
 }

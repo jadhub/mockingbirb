@@ -20,12 +20,14 @@ type (
 		Responder      *web.Responder
 		ConfigProvider configDomain.ConfigProvider
 	}
+
 	// MockResult ...
 	MockResult struct {
 		Config configDomain.ConfigTree
 	}
 )
 
+// Inject handles dependency injection
 func (c *MockController) Inject(
 	responder *web.Responder,
 	logger flamingo.Logger,
@@ -36,6 +38,7 @@ func (c *MockController) Inject(
 	c.ConfigProvider = configProvider
 }
 
+// GetConfigAction shows the current config
 func (c *MockController) GetConfigAction(ctx context.Context, req *web.Request) web.Result {
 	configTree := c.ConfigProvider.GetConfigTree()
 
@@ -46,6 +49,7 @@ func (c *MockController) GetConfigAction(ctx context.Context, req *web.Request) 
 	return c.Responder.Data(res).Status(http.StatusOK)
 }
 
+// MockAction is used by all Mock Routes to display mock data
 func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.Result {
 	configTree := c.ConfigProvider.GetConfigTree()
 
@@ -112,9 +116,9 @@ func (c *MockController) getResponseConfig(tree configDomain.ConfigTree, req *we
 
 					if getValidation == true {
 						return &response
-					} else {
-						return c.ParamMismatchResponse()
 					}
+
+					return c.ParamMismatchResponse()
 				}
 
 				// check if matcherPostParams are set
@@ -132,9 +136,9 @@ func (c *MockController) getResponseConfig(tree configDomain.ConfigTree, req *we
 
 					if postValidation == true {
 						return &response
-					} else {
-						return c.ParamMismatchResponse()
 					}
+
+					return c.ParamMismatchResponse()
 				}
 
 				// matcherGetParams and matcherPostParams are optional, if URI and http method match, return response
@@ -146,12 +150,13 @@ func (c *MockController) getResponseConfig(tree configDomain.ConfigTree, req *we
 	return c.NoConfigFoundResponse()
 }
 
+// ParamMismatchResponse is returned if request get or post params do not match with config
 func (c *MockController) ParamMismatchResponse() *configDomain.Response {
 	return &configDomain.Response{
 		ResponseConfig: struct {
-			StatusCode int               `json:"statusCode"`
-			Headers    map[string]string `json:"headers"`
-			Body       interface{}       `json:"body,omitempty"`
+			StatusCode int
+			Headers    map[string]string
+			Body       interface{}
 		}{
 			StatusCode: 404,
 			Headers: map[string]string{
@@ -162,12 +167,13 @@ func (c *MockController) ParamMismatchResponse() *configDomain.Response {
 	}
 }
 
+// NoConfigFoundResponse is returned if no configuration is found for this route
 func (c *MockController) NoConfigFoundResponse() *configDomain.Response {
 	return &configDomain.Response{
 		ResponseConfig: struct {
-			StatusCode int               `json:"statusCode"`
-			Headers    map[string]string `json:"headers"`
-			Body       interface{}       `json:"body,omitempty"`
+			StatusCode int
+			Headers    map[string]string
+			Body       interface{}
 		}{
 			StatusCode: 404,
 			Headers: map[string]string{
