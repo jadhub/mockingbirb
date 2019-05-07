@@ -15,3 +15,5 @@ junit.xml
 /integration-test/shared
 context_local.yml
 mockingbirb
+mockingbirb_linux
+bin

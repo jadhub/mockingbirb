@@ -2,8 +2,9 @@ package server
 
 import (
 	"flamingo.me/dingo"
-	configDomain "go.aoe.com/mockingbirb/src/config/domain"
-	"go.aoe.com/mockingbirb/src/config/infrastructure"
+
+	configDomain "mockingbirb/src/mockconfig/domain"
+	"mockingbirb/src/mockconfig/infrastructure"
 )
 
 type (

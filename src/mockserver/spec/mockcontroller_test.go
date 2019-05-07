@@ -12,9 +12,10 @@ import (
 
 	"flamingo.me/flamingo/v3/framework/flamingo"
 	"flamingo.me/flamingo/v3/framework/web"
-	configDomain "go.aoe.com/mockingbirb/src/config/domain"
-	configInfrastructure "go.aoe.com/mockingbirb/src/config/infrastructure"
-	"go.aoe.com/mockingbirb/src/server/interfaces/controller"
+
+	configDomain "mockingbirb/src/mockconfig/domain"
+	configInfrastructure "mockingbirb/src/mockconfig/infrastructure"
+	"mockingbirb/src/mockserver/interfaces/controller"
 )
 
 type (

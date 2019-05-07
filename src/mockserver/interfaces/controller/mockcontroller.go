@@ -7,10 +7,10 @@ import (
 	"net/http"
 	"strings"
 
-	configDomain "go.aoe.com/mockingbirb/src/config/domain"
-
 	"flamingo.me/flamingo/v3/framework/flamingo"
 	"flamingo.me/flamingo/v3/framework/web"
+
+	configDomain "mockingbirb/src/mockconfig/domain"
 )
 
 type (

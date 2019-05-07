@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	configDomain "go.aoe.com/mockingbirb/src/config/domain"
-	configDto "go.aoe.com/mockingbirb/src/config/infrastructure/dto"
+	configDomain "mockingbirb/src/mockconfig/domain"
+	configDto "mockingbirb/src/mockconfig/infrastructure/dto"
 )
 
 type (
@@ -21,7 +21,12 @@ type (
 
 const (
 	// CONFIGDIR ses the directory to read mock config from
-	CONFIGDIR = "config/json_config"
+	CONFIGDIR = "./config/json_config"
+)
+
+var (
+	// check interface implementation
+	_ configDomain.ConfigProvider = (*JSONConfigProvider)(nil)
 )
 
 // NewJSONConfigProvider returns a JSONConfigProvider

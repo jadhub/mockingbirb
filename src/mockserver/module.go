@@ -1,12 +1,14 @@
-package server
+package mockserver
 
 import (
+	"fmt"
 	"strings"
 
 	"flamingo.me/dingo"
 	"flamingo.me/flamingo/v3/framework/web"
-	configDomain "go.aoe.com/mockingbirb/src/config/domain"
-	"go.aoe.com/mockingbirb/src/server/interfaces/controller"
+
+	configDomain "mockingbirb/src/mockconfig/domain"
+	"mockingbirb/src/mockserver/interfaces/controller"
 )
 
 type (
@@ -36,7 +38,10 @@ type routes struct {
 // Routes for mockingbirb api
 func (r *routes) Routes(registry *web.RouterRegistry) {
 	registry.HandleGet("mockingbirb.api.getConfig", r.mockController.GetConfigAction)
-	registry.Route("/api/getConfig", "mockingbirb.api.getConfig")
+	_, err := registry.Route("/api/getConfig", "mockingbirb.api.getConfig")
+	if err != nil {
+		panic(fmt.Sprintf("unexpected route bind error: %v", err))
+	}
 
 	r.registerMockRoutes(registry)
 }
@@ -56,7 +61,10 @@ func (r *routes) registerMockRoutes(registry *web.RouterRegistry) {
 			key := strings.Replace(response.MatcherConfig.URI, "/", ".", -1)
 
 			registry.HandleAny(key, r.mockController.MockAction)
-			registry.Route(response.MatcherConfig.URI, key)
+			_, err := registry.Route(response.MatcherConfig.URI, key)
+			if err != nil {
+				panic(fmt.Sprintf("unexpected route bind error: %v", err))
+			}
 		}
 	}
 }

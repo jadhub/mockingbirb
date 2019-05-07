@@ -1,7 +1,10 @@
-# Use aoepeople scratch with installed root certificates
-FROM aoepeople/scratch-ca:latest
+FROM aoepeople/scratch-go-env
 
-EXPOSE 8080
-ADD mockingbirb /
+ADD config /config
+ADD bin/mockingbirb_unix /mockingbirb_unix
 
-CMD ["/mockingbirb"]
+ENTRYPOINT ["/mockingbirb_unix"]
+
+EXPOSE 3210
+
+CMD ["serve"]
