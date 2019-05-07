@@ -5,7 +5,7 @@ Mockingbirb is an HTTP API Mock server for defining http routes with predefined 
 ## Getting Started
 
 - Install Go
-- fire up ```CONTEXT=main go run mockingbirb.go serve```
+- fire up ```CONTEXT=dev make serve```
 - Its running!
 
 ### Prerequisites
@@ -27,7 +27,7 @@ End with an example of getting some data out of the system or using it for a lit
 Use the following to run the tests:
 
 ```
-go test ./... -v
+make test
 ```
 
 ## Built With
