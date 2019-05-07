@@ -11,7 +11,7 @@ VERSION_NUMBER?=latest
 
 .PHONY: serve
 
-all: test build
+all: test build build-linux
 build:
 	cd src && $(GOBUILD) -o ../$(BIN_FOLDER)$(APP_NAME) -v
 build-linux:
@@ -32,3 +32,5 @@ containerize:
 mockingbirb-dev: Dockerfile
 	make build
 	docker build --force-rm=true -t $(APP_NAME)-dev:$(VERSION_NUMBER) -f Dockerfile .
+docker-run:
+	docker run -p 3322:3322 mockingbirb:latest

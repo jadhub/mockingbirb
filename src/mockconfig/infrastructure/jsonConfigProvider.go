@@ -21,7 +21,7 @@ type (
 
 const (
 	// CONFIGDIR ses the directory to read mock config from
-	CONFIGDIR = "./config/json_config"
+	CONFIGDIR = "mock_config"
 )
 
 var (
@@ -32,7 +32,13 @@ var (
 // NewJSONConfigProvider returns a JSONConfigProvider
 func NewJSONConfigProvider() *JSONConfigProvider {
 	p := new(JSONConfigProvider)
-	p.cfg = p.LoadConfig(CONFIGDIR)
+
+	currentDir, err := os.Getwd()
+	if err != nil {
+		panic("shit")
+	}
+
+	p.cfg = p.LoadConfig(currentDir + "/../" + CONFIGDIR)
 	return p
 }
 

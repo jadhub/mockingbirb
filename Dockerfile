@@ -1,10 +1,10 @@
 FROM aoepeople/scratch-go-env
 
-ADD config /config
-ADD bin/mockingbirb_unix /mockingbirb_unix
+ADD mock_config /mock_config
+ADD bin/mockingbirb_unix bin/mockingbirb_unix
 
-ENTRYPOINT ["/mockingbirb_unix"]
+ENTRYPOINT ["bin/mockingbirb_unix"]
 
-EXPOSE 3210
+EXPOSE 3322
 
 CMD ["serve"]
