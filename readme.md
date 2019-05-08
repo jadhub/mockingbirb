@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/jadhub/mockingbirb.svg?branch=master)](https://travis-ci.org/jadhub/mockingbirb)
+
 # Mockingbirb
 
 Mockingbirb is an HTTP API Mock server for defining http routes with predefined responses.
