@@ -26,11 +26,13 @@ serve:
 	cd src && DEBUG=1 CONTEXT=$(CONTEXT) go run main.go serve
 update-flamingo:
 	go get flamingo.me/flamingo/v3
-container: build-linux containerize
+container: test build-linux containerize
 containerize:
 	docker build -t $(APP_NAME):$(VERSION_NUMBER) .
-mockingbirb-dev: Dockerfile
-	make build
-	docker build --force-rm=true -t $(APP_NAME)-dev:$(VERSION_NUMBER) -f Dockerfile .
 docker-run:
-	docker run -p 3322:3322 mockingbirb:latest
+	docker run \
+		--rm \
+		-p 3322:3322 \
+		-p 8080:8080 \
+		-p 9090:9090 \
+		$(APP_NAME):latest
