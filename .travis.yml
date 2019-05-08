@@ -21,4 +21,3 @@ before_script:
 
 script:
   - make container
-  - make docker-push
