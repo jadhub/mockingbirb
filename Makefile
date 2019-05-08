@@ -28,12 +28,12 @@ update-flamingo:
 	go get flamingo.me/flamingo/v3
 container: build-linux containerize
 containerize:
-	docker build -t $(APP_NAME):$(VERSION_NUMBER) .
+	docker build -t jadhub/$(APP_NAME):$(VERSION_NUMBER) .
 docker-run:
 	docker run \
 		--rm \
 		-p 3322:3322 \
-		$(APP_NAME):latest
+		jadhub/$(APP_NAME):latest
 docker-push:
 	echo "$(DOCKER_PASS)" | docker login -u "$(DOCKER_USER)" --password-stdin
-	docker push jadhub/mockingbirb
+	docker push jadhub/$(APP_NAME)
