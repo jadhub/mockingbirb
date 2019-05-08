@@ -35,5 +35,5 @@ docker-run:
 		-p 3322:3322 \
 		$(APP_NAME):latest
 docker-push:
-	docker login -e $(DOCKER_EMAIL) -u $(DOCKER_USER) -p $(DOCKER_PASS)
+	docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
 	docker push jadhub/mockingbirb
