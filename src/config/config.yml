@@ -1,4 +1,1 @@
 debug.mode: false
-
-api:
-  port: 9090

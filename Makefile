@@ -33,6 +33,4 @@ docker-run:
 	docker run \
 		--rm \
 		-p 3322:3322 \
-		-p 8080:8080 \
-		-p 9090:9090 \
 		$(APP_NAME):latest

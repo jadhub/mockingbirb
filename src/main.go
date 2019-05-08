@@ -5,34 +5,18 @@ import (
 	"flamingo.me/flamingo/v3"
 	"flamingo.me/flamingo/v3/core/cache"
 	"flamingo.me/flamingo/v3/core/zap"
-	"flamingo.me/flamingo/v3/framework/config"
+	"flamingo.me/flamingo/v3/framework"
+	"flamingo.me/flamingo/v3/framework/cmd"
 	mockingBirbConfig "mockingbirb/src/mockconfig"
 	mockingBirbServer "mockingbirb/src/mockserver"
 )
 
 type (
-	mockingBirb struct {
-		apiPort int
-	}
+	mockingBirb struct {}
 )
 
 // Inject dependencies
-func (m *mockingBirb) Inject(
-	cfg *struct {
-		APIPort float64 `inject:"config:api.port"`
-	},
-) {
-	m.apiPort = int(cfg.APIPort)
-}
-
-// DefaultConfig for this module
-func (m *mockingBirb) DefaultConfig() config.Map {
-	return config.Map{
-		"api": config.Map{
-			"port": 8080,
-		},
-	}
-}
+func (m *mockingBirb) Inject() {}
 
 // Configure DI
 func (m *mockingBirb) Configure(injector *dingo.Injector) {
@@ -42,6 +26,8 @@ func (m *mockingBirb) Configure(injector *dingo.Injector) {
 func main() {
 	flamingo.App(
 		[]dingo.Module{
+			new(framework.InitModule),
+			new(cmd.Module),
 			new(zap.Module),
 			new(mockingBirbConfig.Module),
 			new(mockingBirbServer.Module),
