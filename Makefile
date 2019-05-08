@@ -26,7 +26,7 @@ serve:
 	cd src && DEBUG=1 CONTEXT=$(CONTEXT) go run main.go serve
 update-flamingo:
 	go get flamingo.me/flamingo/v3
-container: test build-linux containerize
+container: build-linux containerize
 containerize:
 	docker build -t $(APP_NAME):$(VERSION_NUMBER) .
 docker-run:

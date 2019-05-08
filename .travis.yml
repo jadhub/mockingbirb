@@ -1,0 +1,24 @@
+dist: xenial
+
+language: go
+
+env:
+  - GO111MODULE=on
+  - GOFLAGS='-mod vendor'
+
+go:
+  - 1.12.x
+
+git:
+  depth: 1
+
+install: true
+
+notifications:
+  email: false
+
+before_script:
+  make test
+
+script:
+  make container
