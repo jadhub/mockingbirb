@@ -7,16 +7,24 @@ import (
 	"flamingo.me/flamingo/v3/core/zap"
 	"flamingo.me/flamingo/v3/framework"
 	"flamingo.me/flamingo/v3/framework/cmd"
+	flamingoFramework "flamingo.me/flamingo/v3/framework/flamingo"
 	mockingBirbConfig "mockingbirb/src/mockconfig"
 	mockingBirbServer "mockingbirb/src/mockserver"
 )
 
 type (
-	mockingBirb struct {}
+	mockingBirb struct {
+		Logger flamingoFramework.Logger
+	}
 )
 
 // Inject dependencies
-func (m *mockingBirb) Inject() {}
+func (m *mockingBirb) Inject(
+	logger flamingoFramework.Logger,
+) {
+	m.Logger = logger
+	logger.Info("Starting Mockingbirb Server")
+}
 
 // Configure DI
 func (m *mockingBirb) Configure(injector *dingo.Injector) {

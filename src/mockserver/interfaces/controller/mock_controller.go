@@ -33,7 +33,7 @@ func (c *MockController) Inject(
 	logger flamingo.Logger,
 	configProvider configDomain.ConfigProvider,
 ) {
-	c.Logger = logger
+	c.Logger = logger.WithField("category", "controller").WithField(flamingo.LogKeyModule,"mockingbirb.mockcontroller")
 	c.Responder = responder
 	c.ConfigProvider = configProvider
 }
@@ -56,6 +56,9 @@ func (c *MockController) MockAction(ctx context.Context, req *web.Request) web.R
 	responseConfig := c.getResponseConfig(configTree, req)
 
 	c.Responder.Data(responseConfig.ResponseConfig.Body)
+
+	c.Logger.Info(fmt.Sprintf("MockAction for Path: %v with Method: %v ", req.Request().URL.Path, req.Request().Method))
+	c.Logger.Info(fmt.Sprintf("MatcherConfig found: %v", responseConfig.MatcherConfig))
 
 	responseHeader := http.Header{}
 
