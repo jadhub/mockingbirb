@@ -7,6 +7,7 @@ Mockingbirb is an HTTP API Mock server for defining http routes with predefined 
 ## Getting Started
 
 - Install Go
+- copy ```src/mockserver/spec/test_json_config/config.json``` to the ```mock_config``` folder and adapt it to your needed configuration
 - fire up ```CONTEXT=dev make serve```
 - Its running!
 
@@ -18,7 +19,7 @@ You will need Golang in version 1.12.1 installed.
 
 Currently, the project has a simple JSON config provider implemented that reads a json file and adds the contained routes to its internal config.
 
-For an example, you should have a look at mockingbirb/src/mockserver/spec/test_json_config/config.json (which is also used for the test suite) as it shows a few usecases how requests and responses should be structured. "matcherconfig" filters the requests to mockingbirb and the attached 
+For an example, you should have a look at src/mockserver/spec/test_json_config/config.json (which is also used for the test suite) as it shows a few usecases how requests and responses should be structured. "matcherconfig" filters the requests to mockingbirb and the attached 
 "responseconfig" sets the format of the response.
 
 Basically, a config looks like this:
