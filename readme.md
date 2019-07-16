@@ -18,11 +18,34 @@ You will need Golang in version 1.12.1 installed.
 
 Currently, the project has a simple JSON config provider implemented that reads a json file and adds the contained routes to its internal config.
 
-For an example, you should have a look at src/server/spec/test_json_config/config.json (which is also used for the test suite) as it
-shows a few usecases how requests and responses should be structured. "matcherconfig" filters the requests to mockingbirb and the attached 
+For an example, you should have a look at mockingbirb/src/mockserver/spec/test_json_config/config.json (which is also used for the test suite) as it shows a few usecases how requests and responses should be structured. "matcherconfig" filters the requests to mockingbirb and the attached 
 "responseconfig" sets the format of the response.
 
-End with an example of getting some data out of the system or using it for a little demo
+Basically, a config looks like this:
+`
+[
+  {
+    "responses": [
+      {
+        "matcherconfig": {
+          "uri": "/greet/me",
+          "method": "get"
+        },
+        "responseconfig": {
+          "statusCode": 200,
+          "headers": {
+            "Content-Type": "text/plain; charset=utf-8"
+          },
+          "body": {
+            "message": "Mockingbirb says hi!"
+          }
+        }
+      }
+		]
+  }
+]
+`
+A matcherconfig instructs mockingbirb to react to a request to /greet/me, but only if its a GET Request. The responseconfig shapes the response to the request, answering with HTTP Status 200, a text/plain Content-Type and a nice Message in the Response Body. There are more examples in the test config, read up for further ideas, i.e. specific parameters in the matcherconfig. 
 
 ## Running the tests
 
