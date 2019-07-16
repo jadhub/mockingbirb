@@ -23,7 +23,7 @@ For an example, you should have a look at src/mockserver/spec/test_json_config/c
 "responseconfig" sets the format of the response.
 
 Basically, a config looks like this:
-`
+```
 [
   {
     "responses": [
@@ -45,7 +45,7 @@ Basically, a config looks like this:
 		]
   }
 ]
-`
+```
 A matcherconfig instructs mockingbirb to react to a request to /greet/me, but only if its a GET Request. The responseconfig shapes the response to the request, answering with HTTP Status 200, a text/plain Content-Type and a nice Message in the Response Body. There are more examples in the test config, read up for further ideas, i.e. specific parameters in the matcherconfig. 
 
 ## Running the tests
